@@ -25,6 +25,7 @@ load("obras_24052018.Rdata")
 
 obras_24052018 <- obras_24052018 %>%
   clean_names() %>%
+  filter(rede_de_ensino_publico == "Municipal") %>%
   select(municipio, uf, email) %>%
   distinct(email, .keep_all=TRUE) %>%
   rename(email_original = email)
@@ -41,9 +42,7 @@ provedores <- obras_24052018 %>%
   filter(!grepl("gov.br", final)) %>%
   filter(!grepl("gov.com.br", final)) %>%
   filter(!grepl("-rs.com.br", final)) %>%
-  distinct(final, .keep_all=TRUE) # %>%
-  # filter(final != "com.br" &
-  #          final != ".com.br")
+  distinct(final, .keep_all=TRUE)
 
 provedores_vector <- unique(provedores$final)
 
@@ -75,11 +74,27 @@ result <- obras_24052018 %>%
                               inicio %in% criterio2, 0, 1),
          red_flag = ifelse(red_flag == 1 &
                                      grepl("(pm|sm)", inicio), 0, 1)) %>%
-  select(municipio, uf, inicio, final, red_flag)
+  select(municipio, uf, inicio, final, email_original, red_flag)
 
 result %>%
   group_by(red_flag) %>%
   summarise( emails = n())
+
+red_flag_changes <- contatos_tdp %>%
+  clean_names() %>%
+  filter(instancia == "Prefeitura") %>%
+  left_join(result, by= c("municipio", "uf")) %>%
+  mutate(contato = tolower(contato),
+          mudou = ifelse (email_original ==  contato , 0, 1 )) %>%
+  mutate(red_flag = ifelse(is.na(red_flag), 1 , red_flag))
+
+red_flag_changes %>%
+  group_by(red_flag) %>%
+  summarise(ped = n())
+
+red_flag_changes %>%
+  group_by(mudou) %>%
+  summarise(ped = n())
 
 setwd("C:\\Users\\jvoig\\OneDrive\\Documentos\\tdp_impact")
 save(result, file="red_flag_result.Rdata")
