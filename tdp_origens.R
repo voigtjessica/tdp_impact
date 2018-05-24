@@ -5,7 +5,7 @@ library(data.table)
 
 setwd("C:\\Users\\jvoig\\Downloads")
 
-tdp_origens <- fread("Analytics Tá de Pé - App Origens 20170814-20180522.csv")
+tdp_origens <- fread("Analytics Tá de Pé - App Origens 20170814-20180228 (1).csv")
 
 colnames(tdp_origens) <- c("origem_midia", "cidade",
                            "usuarios", "novos_usuarios",
