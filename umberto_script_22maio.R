@@ -133,3 +133,21 @@ concluidas_segundo_fnde <- read_excel("C:/Users/jvoig/OneDrive/Documentos/tdp_im
                                       col_types = c("text", "text", "date"))
 
 save(concluidas_segundo_fnde, file= "concluidas_segundo_fnde.Rdata")
+
+# Obras do inicio do projeto
+
+obras18082017 <- read_delim("C:/Users/jvoig/Downloads/obras18082017.csv", 
+                            ";", escape_double = FALSE, trim_ws = TRUE)
+obras18082017 <- obras18082017 %>%
+  clean_names()
+
+# Obras de antes do incio do projeto
+obras060420172_utf8 <- read_delim("C:/Users/jvoig/Downloads/obras060420172_utf8.csv", 
+                                  ";", escape_double = FALSE, trim_ws = TRUE)
+
+obras060420172_utf8 <- obras060420172_utf8 %>%
+  clean_names()
+
+setwd("C:\\Users\\jvoig\\OneDrive\\Documentos\\tdp_impact\\arquivos_obras")
+save(obras18082017, file="obras18082017.Rdata")
+save(obras060420172_utf8, file="obras06042017.Rdata")
