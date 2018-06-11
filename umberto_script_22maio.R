@@ -7,7 +7,7 @@ library(readxl)
 pg = dbDriver("PostgreSQL")
 
 con = dbConnect(pg,
-                user="read_only_user", password="pandoapps",
+                user="read_only_user", password=,
                 host ="aag6rh5j94aivq.cxbz7geveept.sa-east-1.rds.amazonaws.com",
                 port = 5432, dbname="ebdb")
 
